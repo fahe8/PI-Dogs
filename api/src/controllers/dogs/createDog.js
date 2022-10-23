@@ -2,7 +2,7 @@ const {Dog, Temperament} = require('../../db')
 
 const createDog = async (dog) => {
     const {name, temperament ,image,height,weight, life_span} = dog
-    if(!name && name.length === 0 && !height && height.length === 0) {throw new Error('Name and height shoul be required ')}
+    if(!name || name.length === 0 || !height || height.length === 0) {throw new Error('Name and height should be required ')}
     const [dogcreated, created] = await Dog.findOrCreate({
         where: {name: name},
         defaults: {
@@ -20,9 +20,9 @@ const createDog = async (dog) => {
             }
         })
         dogcreated.addTemperament(relacion)
-        return 'Se ha creado'
+        return 'It has been created'
     } else {
-        throw new Error('Ya existe')
+        throw new Error('It already exists')
     }
 }
 

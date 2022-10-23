@@ -7,16 +7,15 @@ const { createDog } = require('../controllers/dogs/createDog')
 
 router.get('/', async (req,res) => {
     try {
-        console.log(req.query)
         const {name} = req.query;
         if(!name) {
             res.status(200).send( await getDogs() )
         } else {
-            res.status(200).send(await getDogQuery(name))
+            console.log(name.toLowerCase())
+            res.status(200).send(await getDogQuery(name.replace(/\s/g,'').toLowerCase()))
         }
-
     } catch (error) {
-        res.send(error.message)
+        res.status(400).send(error.message)
     }
 })
 
@@ -32,9 +31,14 @@ router.get('/:id', async (req,res) => {
 
 router.post('/', async (req,res) => {
     try {   
-        res.status(200).send(await createDog(req.body))
+        res.status(201).send(await createDog(req.body))
     } catch (error) {
-        res.status(400).send(error.message)
+        if(error.message === 'It already exists'){
+            res.status(409).send(error.message)
+        } else {
+
+            res.status(422).send(error.message)
+        }
     }
 })
 

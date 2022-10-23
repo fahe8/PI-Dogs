@@ -1,6 +1,7 @@
 const axios = require('axios')
 const {Dog, Temperament} = require("../../db")
 const { Op } = require("sequelize");
+let {allDogs} = require('./getDogs')
 
 const dogDb = async (dog) => {
     return await Dog.findAll({
@@ -9,30 +10,21 @@ const dogDb = async (dog) => {
         },
         include: {
             model: Temperament,
-            attributes: ["name"]
+            attributes: ["name"],
+            through: {attributes:[]}
         }
-    })
+    });
 }
 
 const dogApi = async (dog) => {
-    const {data} = await axios.get(`https://api.thedogapi.com/v1/breeds/search?q=${dog}`)
-    if(data.length > 0) {
-        const { id, name, image, weight , temperament } = data[0];
-        return {
-            id: id,
-            name:name,
-            image:image.url,
-            weight: weight.metric,
-            temperament: temperament?.split(', ')
-        }
-    } 
-    return data
-
+    return allDogs.filter(f => f.name.toLowerCase().includes(dog)); 
 }
 const getDogQuery = async (dog) => {
-    const queryApi = await dogApi(dog)
-    const queryDb = await dogDb(dog)
-    return [...queryDb, ...queryApi]
+    const queryApi = await dogApi(dog);
+    const queryDb = await dogDb(dog);
+    const res =  [...queryDb, ...queryApi]
+    if(!res.length) {throw new Error('Not Found results')}
+    return res;
 }
 
-module.exports = {getDogQuery}
+module.exports = {getDogQuery};
