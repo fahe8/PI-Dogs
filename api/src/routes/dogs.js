@@ -1,14 +1,16 @@
 const { Router } = require('express')
 const router = Router()
-const { getDogs } = require('../controllers/dogs/getDogs')
+const { getDogs} = require('../controllers/dogs/getDogs')
+let { allDogs} = require('../controllers/dogs/getDogs')
 const { getDogQuery } = require('../controllers/dogs/getDogPerQuery')
 const { createDog } = require('../controllers/dogs/createDog')
 
 router.get('/', async (req,res) => {
     try {
+        console.log(req.query)
         const {name} = req.query;
         if(!name) {
-            res.status(200).send(await getDogs() )
+            res.status(200).send( await getDogs() )
         } else {
             res.status(200).send(await getDogQuery(name))
         }
@@ -21,8 +23,7 @@ router.get('/', async (req,res) => {
 router.get('/:id', async (req,res) => {
     try {
         const {id} = req.params
-        const alldogs = await getDogs()
-        const dogId = alldogs.find(dog => dog.id == id)
+        const dogId = allDogs.find(dog => dog.id == id)
         res.status(200).send(dogId)
     } catch (error) {
         
