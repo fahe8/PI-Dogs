@@ -1,0 +1,23 @@
+.container {
+  width: 100%;
+}
+.container-cards {
+  max-width: 1200px;
+  height: 100%;
+  margin: 0 auto;
+  display: grid;
+  padding: 0 20px;
+  gap: 20px;
+}
+
+@media (min-width: 600px) {
+  .container-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 900px) {
+  .container-cards {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

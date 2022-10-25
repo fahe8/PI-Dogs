@@ -1,10 +1,10 @@
 const axios = require('axios')
 const {Temperament } = require('../../db')
-const {allDogs} = require('../dogs/getDogs')
+const {allDogs, getDogs} = require('../dogs/getDogs')
 const getTemperaments = async () => {
     // const {data} = await  axios.get('https://api.thedogapi.com/v1/breeds')
-
-    const info = allDogs?.map(dog => 
+    const dogs = await getDogs()
+    const info = dogs?.map(dog => 
         dog.temperament?.split(', ')
     ).flat()
 

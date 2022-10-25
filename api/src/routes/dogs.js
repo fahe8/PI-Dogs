@@ -1,7 +1,7 @@
 const { Router } = require('express')
 const router = Router()
 const { getDogs} = require('../controllers/dogs/getDogs')
-let { allDogs} = require('../controllers/dogs/getDogs')
+// let { allDogs} = require('../controllers/dogs/getDogs')
 const { getDogQuery } = require('../controllers/dogs/getDogPerQuery')
 const { createDog } = require('../controllers/dogs/createDog')
 
@@ -22,6 +22,7 @@ router.get('/', async (req,res) => {
 router.get('/:id', async (req,res) => {
     try {
         const {id} = req.params
+        const allDogs = await getDogs()
         const dogId = allDogs.find(dog => dog.id == id)
         res.status(200).send(dogId)
     } catch (error) {

@@ -1,7 +1,7 @@
 const {Dog, Temperament} = require('../../db')
 
 const createDog = async (dog) => {
-    const {name, temperament ,image,height,weight, life_span} = dog
+    const {name, temperaments ,image,height,weight, life_span} = dog
     if(!name || name.length === 0 || !height || height.length === 0) {throw new Error('Name and height should be required ')}
     const [dogcreated, created] = await Dog.findOrCreate({
         where: {name: name},
@@ -16,7 +16,7 @@ const createDog = async (dog) => {
     if(created) {
         const relacion = await Temperament.findAll({
             where: {
-                name: temperament
+                name: temperaments
             }
         })
         dogcreated.addTemperament(relacion)

@@ -1,0 +1,30 @@
+img {
+  width: 150px;
+  height: 150px;
+}
+
+.card {
+    padding: 10px;
+  border-radius: 15%;
+  text-align: center;
+  background-color: #f79e78;
+
+}
+
+.card-content {
+
+}
+
+.card-temperaments {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}
+
+.card-temperament {
+  -webkit-box-shadow: 5px 5px 15px 5px #000000;
+  box-shadow: 2px 2px 0px 1px #000000;
+}

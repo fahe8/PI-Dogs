@@ -5,10 +5,11 @@ let allDogs = []
 
 const getDogsDB = async () => {
     return await Dog.findAll({
-      attributes: ["name","height","image"],
+      attributes: ["id", "name","height","image"],
       include: {
         model: Temperament,
-        attributes: ["name"]
+        attributes: ["name"],
+        through: {attributes:[]}
       }
     })
 }
@@ -24,7 +25,7 @@ const getDogsApi = async () => {
       image: image.url,
       height: height.metric,
       weight: weight.metric,
-      temperament: newTemp,
+      temperaments: newTemp,
       life_span:life_span
     };
     allDogs.push(details)
