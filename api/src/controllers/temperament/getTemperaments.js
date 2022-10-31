@@ -5,7 +5,7 @@ const getTemperaments = async () => {
     // const {data} = await  axios.get('https://api.thedogapi.com/v1/breeds')
     const dogs = await getDogs()
     const info = dogs?.map(dog => 
-        dog.temperament?.split(', ')
+        dog.temperaments?.split(', ')
     ).flat()
 
     let temperamentFilters = [...new Set(info)].filter(f => f !== undefined)

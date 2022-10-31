@@ -1,14 +1,16 @@
 const {Dog, Temperament} = require('../../db')
 
 const createDog = async (dog) => {
-    const {name, temperaments ,image,height,weight, life_span} = dog
-    if(!name || name.length === 0 || !height || height.length === 0) {throw new Error('Name and height should be required ')}
+    const {name, temperaments ,image,minHeight,maxHeight,minWeight,maxWeight, life_span} = dog
+    if(!name  || !minHeight ||  !maxHeight || !minWeight, !maxWeight) {throw new Error('name and height should be required ')}
     const [dogcreated, created] = await Dog.findOrCreate({
         where: {name: name},
         defaults: {
-            height: height,
+            minHeight: minHeight,
+            maxHeight:maxHeight,
             image: image || 'https://es.vnmod.net/wp-content/uploads/2022/10/171020221665969380.png',
-            weight: weight || '14 - 27',
+            minWeight: minWeight,
+            maxWeight: maxWeight,
             life_span: life_span || '8 - 15 years'
         }
     })
