@@ -6,7 +6,7 @@ let allDogs = []
 
 const getDogsDB = async () => {
     return await Dog.findAll({
-      attributes: ["id", "name","maxWeight","minWeight","image"],
+      attributes: ["id", "name","maxHeight","minHeight","maxWeight","minWeight","image","life_span"],
       include: {
         model: Temperament,
         attributes: ["name"],
@@ -28,9 +28,9 @@ const getDogsApi = async () => {
       maxHeight: maxValue(height.metric),
       minWeight: minValue(weight.metric),
       maxWeight: maxValue(weight.metric),
-      min_life_span: minValue(life_span),
-      max_life_span: maxValue(life_span),
+      
       temperaments: temperament,
+      life_span:life_span
     };
     if(id == 179){
       details.minWeight = 22

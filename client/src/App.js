@@ -6,22 +6,25 @@ import Create from "./components/Create/Create";
 import Detail from "./components/Detail/Detail";
 import Ladding from "./components/Ladding/Ladding";
 import { useDispatch } from "react-redux";
-import {getDogs} from './redux/actions'
+import { getDogs, getTemperaments } from "./redux/actions";
 
 function App() {
-  let dispatch = useDispatch()
-  React.useEffect( ()=>{
-    dispatch(getDogs())
-  },[dispatch])
+  let dispatch = useDispatch();
+  React.useEffect(() => {
+    dispatch(getDogs());
+    dispatch(getTemperaments());
+  }, [dispatch]);
 
-  return <div className="App">
-    <Switch>
+  return (
+    <div className="App">
+      <Switch>
         <Route exact path="/" component={Ladding}></Route>
         <Route path="/home" component={Home}></Route>
         <Route path="/detail/:id" component={Detail}></Route>
         <Route path="/create" component={Create}></Route>
       </Switch>
-  </div>;
+    </div>
+  );
 }
 
 export default App;

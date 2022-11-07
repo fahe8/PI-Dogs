@@ -1,0 +1,122 @@
+.container-ladding {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.container-ladding .slideshow-image {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  background-image: url("../../assets/image/dog1.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  text-align: center;
+  animation: change 12s infinite ease-in-out;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.container-ladding .slideshow-image::after {
+  position: absolute;
+  content: "";
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.container-ladding .content {
+  mix-blend-mode: screen;
+  padding: 10px;
+  background-color: #ffffffbd;
+  width: fit-content;
+  z-index: 1;
+  text-shadow: 2px 2px 0 #fff, 2px -2px 0 #fff, -2px 2px 0 #fff,
+    -2px -2px 0 #fff, 2px 0px 0 #fff, 0px 2px 0 #fff, -2px 0px 0 #fff,
+    0px -2px 0 #fff;
+}
+
+.container-ladding .content h1 {
+  font-size: 9rem;
+}
+.container-ladding .content h2 {
+  font-size: 2rem;
+}
+
+@keyframes change {
+  0% {
+    background-image: url("../../assets/image/dog1.jpg");
+  }
+
+  20% {
+    background-image: url("../../assets/image/dog2.jpg");
+  }
+  40% {
+    background-image: url("../../assets/image/dog3.jpg");
+  }
+
+  60% {
+    background-image: url("../../assets/image/dog4.jpg");
+  }
+
+  80% {
+    background-image: url("../../assets/image/dog5.jpg");
+  }
+  100% {
+    background-image: url("../../assets/image/dog6.jpg");
+  }
+}
+
+.container-ladding .btn {
+  margin-top: 20px;
+  padding: 20px 30px;
+  background: #fff;
+  color: #000;
+  border: none;
+  border-radius: 0.625em;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.btn:hover {
+  color: #fff;
+}
+
+.btn:after {
+  content: "";
+  background: rgb(95, 95, 95);
+  position: absolute;
+  z-index: -1;
+  left: -20%;
+  right: -20%;
+  top: 0;
+  bottom: 0;
+  transform: skewX(-45deg) scale(0, 1);
+  transition: all 0.5s;
+}
+
+.btn:hover:after {
+  transform: skewX(-45deg) scale(1, 1);
+  -webkit-transition: all 0.5s;
+  transition: all 0.5s;
+}
+
+@media only screen and (max-width: 540px) {
+    .container-ladding .content h1 {
+    font-size: 3rem;
+  }
+  .container-ladding .content h2 {
+    font-size: 7vw;
+  }
+}

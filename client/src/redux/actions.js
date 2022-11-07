@@ -11,7 +11,7 @@ const GET_TEMPERAMENTS = "GET_TEMPERAMENTS"
 const ORDER_BY = "ORDER_BY"
 const FILTER_BY = "FILTER_BY"
 
-const getDogs = (dog) => {
+const getDogs = () => {
   return async (dispatch) => {
     try {
       const { data } = await axios.get("http://localhost:3001/dogs");
@@ -37,10 +37,14 @@ const getDogsSearch = (dog) => {
   };
 };
 
-const createDog = (dog) => {
+const createDog = (dog, history) => {
   return async (dispatch) => {
     try {
       const { data } = await axios.post("http://localhost:3001/dogs", dog);
+      setTimeout(() => {
+        history.push('/home')
+        history.go(0)
+    }, 2000)
       return dispatch({ type: CREATE_DOG, payload: data });
     } catch (error) {
       console.log(error.response.data);
@@ -63,7 +67,7 @@ const getDogDetail = (id) => {
 const getTemperaments = () => {
     return async (dispatch) => {
         try {
-          const { data } = await axios.get("http://localhost:3001/temperaments");
+          const { data } = await axios.get("http://localhost:3001/temperament");
           return dispatch({ type: GET_TEMPERAMENTS, payload: data });
         } catch (error) {
           console.log(error.response.data);
@@ -72,13 +76,15 @@ const getTemperaments = () => {
       };
 }
 
-export const orderBy = (order) => {
+
+
+ const orderBy = (order) => {
   return { type: ORDER_BY, payload: order };
 };
 
-export const filterBy = (filter) => {
-
-  return {type: FILTER_BY, payload: filter}
+ const filterBy = (temps, from = "copyDogs") => {
+  currentPage(1)
+  return {type: FILTER_BY, payload: {temps, from}}
 }
 const nextPage = () => {
   return { type: NEXT_PAGE };
@@ -109,5 +115,7 @@ export {
   nextPage,
   prevPage,
   currentPage,
-  getTemperaments
-};
+  getTemperaments,
+  orderBy,
+  filterBy,
+  };

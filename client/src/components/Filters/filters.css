@@ -1,0 +1,122 @@
+.containerFilter {
+  color: #000000;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 0;
+}
+
+.selectTemp {
+  border: 2px solid #ffffff;
+  width: 100%;
+  padding: 5px 10px;
+  z-index: 6;
+  margin-top: 15px;
+  background-color: #fad5a4;
+}
+.selectTemp-text {
+  width: 100%;
+  border-bottom: 1px solid #d7d7d7;
+  text-transform: uppercase;
+  /* background-color: #fad5a4; */
+}
+
+.selecTemp-content {
+  max-height: 200px;
+  overflow: hidden;
+
+}
+
+.selecTemp-content .search {
+  border: 1px solid #d7d7d7;
+  margin: 10px 10px 20px 0;
+  border-bottom: none;
+  position: relative;
+}
+.selecTemp-content .search input {
+  border: 0;
+  border-bottom: 1px solid #d7d7d7;
+  padding: 5px 22px 5px 8px;
+  width: 100%;
+  margin-top: 1px;
+}
+
+.selectTemp-filters {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4px;
+  overflow: hidden;
+  overflow-y: scroll;
+  max-height: inherit;
+}
+
+.selectTemp-filters-text {
+  display: flex;
+  gap: 5px;
+}
+.checkBox {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 15px;
+  height: 15px;
+  background-color: #fff;
+}
+
+.active .checkBox::after {
+  content: "";
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  width: 3px;
+  height: 10px;
+  border-width: 0 2px 2px 0;
+  border-style: solid;
+  border-color: #000000;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.selectTemp-filters-text.active .checkBox {
+  border: 2px solid #000000;
+}
+
+.btns {
+  margin: 20px 0 10px 0;
+  padding: 5px 0;
+  width: 100%;
+}
+/* Order By */
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+
+
+}
+.filter-group p {
+  color: #ffffff;
+}
+.filter-group select {
+  background-color: #fad5a4;
+  border-radius: 5px;
+}
+.filter-group p {
+  padding: 20px 0;
+}
+
+.filter-group option {
+  padding: 5px 0;
+  cursor: pointer;
+}
+option:hover {
+  background-color: #b2e257;
+}
+
+.filter-group-sort {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 1s;
+  background-color: #77a325;
+}
+
+.filter-group .filter-group-sort.active {
+  max-height: 135px;
+}

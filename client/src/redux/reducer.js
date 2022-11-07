@@ -1,45 +1,46 @@
 import {
-    GET_DOGS,
-    GET_DOGS_SEARCH,
-    CREATE_DOG,
-    GET_DOG_DETAIL,
-    GET_TEMPERAMENTS,
-    NEXT_PAGE,
-    PREV_PAGE,
-    CURRENT_PAGE,
-    ORDER_BY,
-    FILTER_BY,
-
+  GET_DOGS,
+  GET_DOGS_SEARCH,
+  GET_DOG_DETAIL,
+  GET_TEMPERAMENTS,
+  NEXT_PAGE,
+  PREV_PAGE,
+  CURRENT_PAGE,
+  ORDER_BY,
+  FILTER_BY,
 } from "./actions";
 
 const initialState = {
   dogs: [],
+  dogsApi:[],
+  dogsDb:[],
   copyDogs: [],
   dogDetail: [],
   temperaments: [],
+  copyTemperaments: [],
   page: 1,
-  dogsPerPage: 15,
+  dogsPerPage: 9,
 };
 
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
-    case ORDER_BY: 
-    switch (action.payload) {
-        case "default":
+    case ORDER_BY:
+      switch (action.payload) {
+        case "copyDogs":
           return {
             ...state,
             dogs: state.copyDogs,
-          }
-        case "api":
+          };
+        case "dogsApi":
           return {
             ...state,
-            dogs: state.copyDogs.filter(p => p.temperaments),
-          }
-        case "db":
+            dogs: state.dogsApi,
+          };
+        case "dogsDb":
           return {
             ...state,
-            dogs: state.copyDogs.filter(p => p.Temperaments),
-          }
+            dogs: state.dogsDb,
+          };
         case "A-Z":
           return {
             ...state,
@@ -58,22 +59,40 @@ const rootReducer = (state = initialState, action) => {
         case "desc":
           return {
             ...state,
-            dogs: [...state.dogs].sort((a, b) => b.attack - a.attack),
+            dogs: [...state.dogs].sort((a, b) => b.maxWeight - a.maxWeight),
           };
         case "asc":
           return {
             ...state,
-            dogs: [...state.dogs].sort((a, b) => a.attack - b.attack),
+            dogs: [...state.dogs].sort((a, b) => a.minWeight - b.minWeight),
           };
 
         default:
-          return { ...state };
+          return { ...state, dogs: state.copyDogs };
       }
+
+    case FILTER_BY:
+      let aux = state[action.payload.from];
+      for (const i of action.payload.temps) {
+        const dogsFilter = aux.filter(
+          (f) =>
+            f.temperaments?.includes(i) ||
+            f.Temperaments?.some((g) => g.name === i)
+        );
+        aux = dogsFilter;
+      }
+      return {
+        ...state,
+        dogs: action.payload.length === 0 ? state.copyDogs : [...aux],
+        page: 1
+      };
     case GET_DOGS:
       return {
         ...state,
         dogs: action.payload,
         copyDogs: action.payload,
+        dogsApi:action.payload.filter((p) => p.temperaments),
+        dogsDb:action.payload.filter((p) => p.Temperaments),
       };
 
     case GET_DOGS_SEARCH:
@@ -81,12 +100,18 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         dogs: action.payload,
       };
-    case GET_DOG_DETAIL : {
-        return {
-            ...state,
-            dogDetail: action.payload
-        }
-    }
+    case GET_DOG_DETAIL:
+      return {
+        ...state,
+        dogDetail: action.payload,
+      };
+
+    case GET_TEMPERAMENTS:
+      return {
+        ...state,
+        temperaments: action.payload,
+        copyTemperaments: action.payload,
+      };
 
     case NEXT_PAGE:
       return {

@@ -2,11 +2,11 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { getDogs } from "../../redux/actions";
-import { Link } from "react-router-dom";
 import Card from "../Card/Card";
 import Pagination from "../Pagination/Pagination";
 import SearchBar from "../SearchBar/SearchBar";
 import Filters from "../Filters/Filters";
+import Header from "../Header/Header";
 import "./home.css";
 
 const Home = () => {
@@ -20,15 +20,19 @@ const Home = () => {
     dispatch(getDogs());
   };
   return (
-    <>
-      <Link to="/create">
-        <button types={temperaments}>Insert Pokemon</button>
-      </Link>
-      <SearchBar></SearchBar>
-      {dogs.length ? (
-        <div className="container">
+    <div className="homeContainer">
+      <Header></Header>
+      <div className="container-left">
+        <div className="panel-left">
+          <SearchBar></SearchBar>
           <Filters temperaments={temperaments}></Filters>
-          <Pagination page={page} pageMax={pageMax}></Pagination>
+        </div>
+      </div>
+      {dogs.length ? (
+        <div className="container-rigth">
+
+            <Pagination page={page} pageMax={pageMax}></Pagination>
+
           <div className="container-cards">
             {dogs
               ?.slice(
@@ -41,20 +45,22 @@ const Home = () => {
                   id={dog.id}
                   name={dog.name}
                   image={dog.image}
-                  height={dog.height}
+                  minWeight={dog.minWeight}
+                  maxWeight={dog.maxWeight}
                   Temperaments={dog.Temperaments?.map((t) => t.name)}
-                  temperaments={dog.temperaments?.map((t) => t)}
+                  temperaments={dog.temperaments?.split(", ").map((t) => t)}
                 ></Card>
               ))}
           </div>
+          <Pagination page={page} pageMax={pageMax}></Pagination>
         </div>
       ) : (
         <div>
-          <button onClick={handleClick}>View All Pokemons</button>
+          <button onClick={handleClick}>View All Dogs</button>
           <div style={{ color: "red" }}>NOT FOUND</div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

@@ -1,19 +1,42 @@
-import { React, useState } from "react";
+import { React, useState, useEffect, useRef } from "react";
+import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { orderBy } from "../../redux/actions";
+import { orderBy, filterBy } from "../../redux/actions";
+import "./filters.css";
 
-const Filters = () => {
+const Filters = ({ temperaments }) => {
   let dispatch = useDispatch();
-  const [active, setActive] = useState(false);
-  const [sort, setSort] = useState("");
-  const [dogsFrom, setDogsFrom] = useState("");
 
+  const [sort, setSort] = useState("");
+  const [dogsFrom, setDogsFrom] = useState("copyDogs");
   const [checked, setChecked] = useState([]);
-  const handleToggle = () => {
-    setActive(!active);
+  const [search, setSearch] = useState("");
+
+  const revealRefs = useRef([]);
+  revealRefs.current = [];
+
+  const addRefs = (el) => {
+    if (el && !revealRefs.current.includes(el)) {
+      revealRefs.current.push(el);
+    }
   };
 
-  const handleToggleTypes = (value) => {
+  useEffect(() => {
+    let v = revealRefs.current.filter((f) => {
+      if (!f.id.toLowerCase().includes(search)) {
+        f.style.display = "none"
+      } else {
+        f.style.display = ""
+      }
+    });
+
+    v.forEach((m) => (m.style.display = "none"));
+  }, [search]);
+  const handleToggleCheck = (event) => {
+    event.currentTarget.classList.toggle("active");
+  };
+
+  const handleToggleTemp = (value) => {
     const newChecked = [...checked];
     const currentIndex = checked.indexOf(value);
     if (currentIndex === -1) {
@@ -24,73 +47,126 @@ const Filters = () => {
     setChecked(newChecked);
   };
 
+  const handleClearFilters = () => {
+    // setChecked([])
+    let allChecks = document.querySelectorAll("label");
+    for (const iterator of allChecks) {
+      iterator.classList.remove("active");
+    }
+    setChecked([]);
+  };
+
+  const handleOnchageSearch = (e) => {
+    setSearch(e.target.value.toLowerCase());
+  };
+
+  const options = {
+    sort: [
+      { value: "A-Z", text: "A-Z" },
+      { value: "Z-A", text: "Z-A" },
+      { value: "desc", text: "Highest Weight" },
+      { value: "asc", text: "Lower Weight" },
+    ],
+    showFrom: [
+      { value: "copyDogs", text: "All dogs" },
+      { value: "dogsApi", text: "Api" },
+      { value: "dogsDb", text: "Created" },
+    ],
+  };
+
   return (
     <div className="containerFilter">
-      {/* <div
-        className={
-          active === true ? "containerFilters active" : "containerFilters"
-        }
-      >
-        <div className="label" onClick={handleToggle}>
-          Filter by Genre <span>{">"}</span>
+      <div className="selectTemp">
+        <div className="selectTemp-text">
+          <p>Select Temperaments</p>
         </div>
-        <div className="contentTypes">
-          {types?.map((type, i) => (
-            <label key={i}>
-              <input
-                onChange={() => handleToggleTypes(type.name)}
-                type="checkbox"
-                value={type.name}
-              />
-              {type.name}
-            </label>
-          ))}
+        <div className="selecTemp-content">
+          <div className="search">
+            <input
+              type="text"
+              placeholder="Search Temperaments"
+              onChange={handleOnchageSearch}
+              value={search}
+            />
+          </div>
+          <div className="selectTemp-filters">
+            {temperaments?.map((t, i) => (
+              <label
+                className="selectTemp-filters-text"
+                key={i}
+                id={t.name}
+                onClick={(e) => {
+                  handleToggleCheck(e);
+                  handleToggleTemp(e.currentTarget.id);
+                }}
+                ref={addRefs}
+              >
+                <div className="checkBox"></div>
+
+                {t.name}
+              </label>
+            ))}
+          </div>
+        </div>
+        <div className="btns">
           <button
             onClick={() => {
-              dispatch(filterBy(checked));
-              dispatch(orderBy(sort));
+              dispatch(orderBy(dogsFrom));
+              dispatch(filterBy(checked, dogsFrom));
+              sort && dispatch(orderBy(sort));
             }}
           >
-            Filter{" "}
+            Filter
           </button>
+          <button onClick={handleClearFilters}>Clear</button>
         </div>
-      </div> */}
+      </div>
 
-      <select
-        name="orderBy"
-        id="orderBy"
-        onChange={(e) => {
-          setSort(e.target.value);
-          dispatch(orderBy(e.target.value));
-          dispatch(orderBy(dogsFrom));
-        }}
-      >
-        <option value="" hidden>
-          Order By
-        </option>
+      <div className="filter-group">
+        <p>Order By:</p>
+        <select
+          name=""
+          id=""
+          onChange={(e) => {
+            setSort(e.target.value);
+            dogsFrom && dispatch(orderBy(dogsFrom));
+            checked.length && dispatch(filterBy(checked, dogsFrom));
+            dispatch(orderBy(e.target.value));
+          }}
+        >
+          <option value="" hidden>
+            Sort By:
+          </option>
+          {options.sort.map((elem, idx) => (
+            <option key={idx} value={elem.value}>
+              {elem.text}
+            </option>
+          ))}
+        </select>
+      </div>
 
-        <option value="A-Z">A-Z</option>
-        <option value="Z-A">Z-A</option>
-        <option value="desc">Highest Attack</option>
-        <option value="asc">Lower Attack</option>
-      </select>
-
-      <select
-        name=""
-        id=""
-        onChange={(e) => {
-          setChecked(e.target.value);
-          dispatch(orderBy(e.target.value));
-          dispatch(orderBy(sort));
-        }}
-      >
-        <option value="" hidden>
-          Dogs from:
-        </option>
-        <option value="default">Default</option>
-        <option value="api">Api</option>
-        <option value="db">Created</option>
-      </select>
+      <div className="filter-group">
+        <p>Order By:</p>
+        <select
+          name=""
+          id=""
+          onChange={(e) => {
+            setDogsFrom(e.target.value);
+            dispatch(orderBy(e.target.value));
+            checked.length && dispatch(filterBy(checked, e.target.value));
+            sort && dispatch(orderBy(sort));
+          }}
+        >
+          <option value="" hidden>
+            Show from:
+          </option>
+          {options.showFrom.map((elem, idx) => (
+            <option key={idx} value={elem.value}>
+              {elem.text}
+            </option>
+          ))}
+        </select>
+      </div>
     </div>
   );
 };
