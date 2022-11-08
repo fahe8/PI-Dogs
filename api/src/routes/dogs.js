@@ -34,11 +34,12 @@ router.post('/', async (req,res) => {
     try {   
         res.status(201).send(await createDog(req.body))
     } catch (error) {
+        console.log(error)
         if(error.message === 'It already exists'){
-            res.status(409).send(error.message)
+            res.status(409).send({msg:error.message,created:false})
         } else {
-
-            res.status(422).send(error.message)
+            console.log(error.message)
+            res.status(422).send({msg:error.message,created:false})
         }
     }
 })

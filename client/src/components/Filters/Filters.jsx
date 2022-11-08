@@ -13,7 +13,7 @@ const Filters = ({ temperaments }) => {
   const [search, setSearch] = useState("");
 
   const revealRefs = useRef([]);
-  revealRefs.current = [];
+
 
   const addRefs = (el) => {
     if (el && !revealRefs.current.includes(el)) {

@@ -1,11 +1,13 @@
 import React from "react";
+import ButtonBack from '../ButtonBack/ButtonBack'
+import Loading from "../Loading/Loading";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getDogDetail } from "../../redux/actions";
-import "./detail.css";
 
-const Detail = () => {
+import "./detail.css";
+const Detail = (props) => {
   let dispatch = useDispatch();
   let dogDetail = useSelector((state) => state.dogDetail);
   let { id } = useParams();
@@ -15,13 +17,18 @@ const Detail = () => {
   React.useEffect(() => {
     dispatch(getDogDetail(id));
   }, [dispatch, id]);
-  console.log(temperaments);
-
+  if(props.loading){
+    return <Loading></Loading>
+  }
   return (
-    <div className="detail">
+    < div className="detail">
+
+      <div className="container-button">
+        <ButtonBack></ButtonBack>
+      </div>
       <div className="container-detail">
         <figure>
-          <img src={dogDetail.image} alt="" />
+          <img src={dogDetail.image} alt="Image dog" />
         </figure>
         <div className="content">
           <h1 className="name">{dogDetail.name}</h1>
@@ -56,6 +63,7 @@ const Detail = () => {
           </div>
         </div>
       </div>
+
     </div>
   );
 };

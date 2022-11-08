@@ -1,6 +1,6 @@
 .header {
     width: 100%;
-    height: 100px;
+    height: 100%;
     grid-area: header;
     text-align: center;
     display: flex;
@@ -24,6 +24,12 @@
     cursor: pointer;
     background: transparent;
     border: none;
+    transition: all 0.2s ease-in;
+  }
+
+  .bone:hover {
+    transform: translate(-2px,-2px);
+    
   }
   .c1, .c2, .c3, .c4{
     background:#fff;
@@ -32,6 +38,11 @@
     border: 1px solid #000;
     border-radius: 50%;
     position:absolute;
+  }
+  .bone:hover > div{
+background-color: #bd6939;
+transition: all 0.2s ease-in;
+
   }
   .c1{
     left: 0;

@@ -1,4 +1,5 @@
 import axios from "axios";
+import Loading from "../components/Loading/Loading";
 
 const GET_DOGS = "GET_DOGS";
 const GET_DOGS_SEARCH = "GET_DOGS_SEARCH";
@@ -10,15 +11,17 @@ const CURRENT_PAGE = "CURRENT_PAGE";
 const GET_TEMPERAMENTS = "GET_TEMPERAMENTS"
 const ORDER_BY = "ORDER_BY"
 const FILTER_BY = "FILTER_BY"
+const LOADING = "LOADING"
 
 const getDogs = () => {
   return async (dispatch) => {
     try {
+      dispatch(loading())
       const { data } = await axios.get("http://localhost:3001/dogs");
-      return dispatch({ type: GET_DOGS, payload: data });
+      return dispatch({ type: "GET_DOGS", payload: data });
     } catch (error) {
       console.log(error.response.data);
-      return dispatch({ type: GET_DOGS, payload: [] });
+      return dispatch({ type: "GET_DOGS", payload: [] });
     }
   };
 };
@@ -29,25 +32,22 @@ const getDogsSearch = (dog) => {
       const { data } = await axios.get(
         "http://localhost:3001/dogs?name=" + dog
       );
-      return dispatch({ type: GET_DOGS_SEARCH, payload: data });
+      return dispatch({ type: "GET_DOGS_SEARCH", payload: data });
     } catch (error) {
       console.log(error.response.data);
-      return dispatch({ type: GET_DOGS_SEARCH, payload: [] });
+      return dispatch({ type: "GET_DOGS_SEARCH", payload: [] });
     }
   };
 };
 
-const createDog = (dog, history) => {
+const createDog = (dog) => {
   return async (dispatch) => {
     try {
       const { data } = await axios.post("http://localhost:3001/dogs", dog);
-      setTimeout(() => {
-        history.push('/home')
-        history.go(0)
-    }, 2000)
-      return dispatch({ type: CREATE_DOG, payload: data });
+      return dispatch({ type: "CREATE_DOG", payload: data });
     } catch (error) {
-      console.log(error.response.data);
+      console.log(error.response.data.msg);
+      return dispatch({ type: "CREATE_DOG", payload: error.response.data });
     }
   };
 };
@@ -55,11 +55,12 @@ const createDog = (dog, history) => {
 const getDogDetail = (id) => {
   return async (dispatch) => {
     try {
+      dispatch(loading())
       const { data } = await axios.get(`http://localhost:3001/dogs/${id}`);
-      return dispatch({ type: GET_DOG_DETAIL, payload: data });
+      return dispatch({ type: "GET_DOG_DETAIL", payload: data });
     } catch (error) {
       console.log(error.response.data);
-      return dispatch({ type: GET_DOG_DETAIL, payload: [] });
+      return dispatch({ type: "GET_DOG_DETAIL", payload: [] });
     }
   };
 };
@@ -68,10 +69,10 @@ const getTemperaments = () => {
     return async (dispatch) => {
         try {
           const { data } = await axios.get("http://localhost:3001/temperament");
-          return dispatch({ type: GET_TEMPERAMENTS, payload: data });
+          return dispatch({ type: "GET_TEMPERAMENTS", payload: data });
         } catch (error) {
           console.log(error.response.data);
-          return dispatch({ type: GET_TEMPERAMENTS, payload: [] });
+          return dispatch({ type: "GET_TEMPERAMENTS", payload: [] });
         }
       };
 }
@@ -79,22 +80,26 @@ const getTemperaments = () => {
 
 
  const orderBy = (order) => {
-  return { type: ORDER_BY, payload: order };
+  return { type: "ORDER_BY", payload: order };
 };
 
  const filterBy = (temps, from = "copyDogs") => {
   currentPage(1)
-  return {type: FILTER_BY, payload: {temps, from}}
+  return {type: "FILTER_BY", payload: {temps, from}}
 }
 const nextPage = () => {
-  return { type: NEXT_PAGE };
+  return { type: "NEXT_PAGE" };
 };
 const prevPage = () => {
-  return { type: PREV_PAGE };
+  return { type: "PREV_PAGE" };
 };
 const currentPage = (page) => {
-  return { type: CURRENT_PAGE, payload: page };
+  return { type: "CURRENT_PAGE", payload: page };
 };
+
+const loading = () => {
+  return {type:"LOADING"}
+}
 
 
 export {
@@ -108,6 +113,7 @@ export {
   CURRENT_PAGE,
   ORDER_BY,
   FILTER_BY,
+  LOADING,
   getDogs,
   getDogsSearch,
   createDog,
@@ -118,4 +124,5 @@ export {
   getTemperaments,
   orderBy,
   filterBy,
+  loading
   };

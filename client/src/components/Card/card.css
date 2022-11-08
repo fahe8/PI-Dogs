@@ -75,21 +75,6 @@
  z-index: 1;
 }
 
-.button-dog:before {
- content: "";
- position: absolute;
- left: 50%;
- transform: translateX(-50%) scaleY(1) scaleX(1.25);
- top: 100%;
- width: 10%;
- height: 180%;
- background-color: rgba(0, 0, 0, 0.05);
- border-radius: 50%;
- display: block;
- transition: all 0.5s 0.1s cubic-bezier(0.55, 0, 0.1, 1);
- z-index: -1;
-}
-
 .button-dog:after {
  content: "";
  position: absolute;
@@ -107,13 +92,7 @@
 
 .button-dog:hover {
  color: #ffffff;
- border: 1px solid #bd6939;
-}
 
-.button-dog:hover:before {
- top: -35%;
- background-color: #bd6939;
- transform: translateX(-50%) scaleY(1.3) scaleX(0.8);
 }
 
 .button-dog:hover:after {

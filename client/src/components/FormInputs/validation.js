@@ -2,14 +2,10 @@ const validation = (values, dogs) => {
   let errors = {};
 
   const verifyMinMax = (min, max) => {
-
     if (Number(min) >= Number(max)) {
-      console.log(true)
       return true;
     } else {
-      console.log(false)
       return false;
-
     }
   };
 
@@ -17,8 +13,7 @@ const validation = (values, dogs) => {
     name: /^[a-zA-Z]{3,16}$/,
     heigthAndWeight: /^[0-9]{0,3}$/,
     lifeSpan: /^[0-9]{0,2}$/,
-    image:
-      /(http)?s?:?(\/\/[^"']*\.(?:png|jpg|jpeg|gif|png|svg))/,
+    image: /(http)?s?:?(\/\/[^"']*\.(?:png|jpg|jpeg|gif|png|svg))/,
   };
 
   if (!values.name) {

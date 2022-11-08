@@ -3,68 +3,33 @@
   max-width: 100vw;
   min-height: 100vh;
   position: relative;
-  background-color: #242424;
 }
 
 .create .errors {
   font-size: 12px;
+  font-weight: bold;
+  text-align: center;
   padding: 3px;
-  color: red;
+  color: #ff0000;
   display: block;
-  min-height: 30px;
+  min-height: 20px;
 }
 .create button {
   cursor: pointer;
-}
-.create .button-back {
-  display: flex;
-  justify-content: center;
-  width: 40px;
-
 }
 
 .create .button-submit {
   display: flex;
   justify-content: center;
-  
 }
 
-.gg-arrow-left {
-  box-sizing: border-box;
-  position: relative;
-  display: block;
-  width: 22px;
-  height: 22px
-}
-.gg-arrow-left::after,
-.gg-arrow-left::before {
-  content: "";
-  display: block;
-  box-sizing: border-box;
-  position: absolute;
-  left: 3px
-}
-.gg-arrow-left::after {
-  width: 8px;
-  height: 8px;
-  border-bottom: 2px solid;
-  border-left: 2px solid;
-  transform: rotate(45deg);
-  bottom: 7px
-}
-.gg-arrow-left::before {
-  width: 16px;
-  height: 2px;
-  bottom: 10px;
-  background: currentColor
-}
 
 .create form {
-  
-  background-color: rgb(202, 255, 233);
+  background-color: #fab566d2;
   padding: 0 40px;
   padding-top: 30px;
   min-width: 300px;
+  position: relative;
 }
 
 .create form .inputs {
@@ -72,38 +37,32 @@
   height: 100%;
   margin: 0 auto;
   display: grid;
-
-  gap: 10px;
 }
 
 .create h1 {
-  color: purple;
   text-align: center;
 }
 
-
-
-
- @media (min-width: 600px) {
+@media (min-width: 600px) {
   .create form {
-
-
-    background-color: rgb(202, 255, 233);
     border-radius: 20px;
     width: 100%;
     height: auto;
   }
-  .create form .inputs .two-inputs{
+  .create form .inputs .two-inputs-container {
+    padding: 5px;
+  }
+  .create form .inputs .two-inputs-container .two-inputs {
+    width: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 0 10px;
-
   }
-} 
+}
 
 @media (min-width: 900px) {
   .create form {
     max-width: 900px;
     margin: 0 auto;
-  } 
- } 
+  }
+}

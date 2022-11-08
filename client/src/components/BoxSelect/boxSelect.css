@@ -80,7 +80,7 @@
   }
   
   .select .select-label.active ~ .select-temperaments {
-    height: 150px;
+    height: 100px;
     opacity: 1;
   }
   
@@ -99,7 +99,7 @@
   }
   
   .select-temperaments .option:hover {
-    background-color: #db1e1e;
+    background-color: #fab566d2;
   }
   
   
@@ -129,7 +129,7 @@
     border-radius: 50%;
     height: 20px;
     width: 20px;
-    background-color: red;
+    background-color: #ff0000;
     cursor: pointer;
   }
   
@@ -158,6 +158,6 @@
   .selected span {
     font-size: 12px;
     padding: 3px;
-    color: red;
+    color: #ff0000;
     display: block;
   }

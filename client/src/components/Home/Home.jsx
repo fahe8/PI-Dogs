@@ -7,9 +7,11 @@ import Pagination from "../Pagination/Pagination";
 import SearchBar from "../SearchBar/SearchBar";
 import Filters from "../Filters/Filters";
 import Header from "../Header/Header";
+import Loading from "../Loading/Loading";
+import NotFound from "../NotFound/NotFound";
 import "./home.css";
 
-const Home = () => {
+const Home = ({ loading }) => {
   let dispatch = useDispatch();
   let dogs = useSelector((state) => state.dogs);
   let temperaments = useSelector((state) => state.temperaments);
@@ -19,6 +21,10 @@ const Home = () => {
   const handleClick = () => {
     dispatch(getDogs());
   };
+
+  if (loading) {
+    return <Loading></Loading>;
+  }
   return (
     <div className="homeContainer">
       <Header></Header>
@@ -30,8 +36,7 @@ const Home = () => {
       </div>
       {dogs.length ? (
         <div className="container-rigth">
-
-            <Pagination page={page} pageMax={pageMax}></Pagination>
+          <Pagination page={page} pageMax={pageMax}></Pagination>
 
           <div className="container-cards">
             {dogs
@@ -55,10 +60,7 @@ const Home = () => {
           <Pagination page={page} pageMax={pageMax}></Pagination>
         </div>
       ) : (
-        <div>
-          <button onClick={handleClick}>View All Dogs</button>
-          <div style={{ color: "red" }}>NOT FOUND</div>
-        </div>
+        <NotFound text={"Dog Not Found"} btnText={"See all Dogs"} handleClick={handleClick}></NotFound>
       )}
     </div>
   );

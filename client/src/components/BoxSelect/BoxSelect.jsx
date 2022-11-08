@@ -22,7 +22,6 @@ const BoxSelect = ({ temperaments, values, setValues, errors }) => {
   };
 
   const mark = (e) => {
-
     let finds = revealRefs.current.find((el) => el.id === e.currentTarget.id);
     if (!values.temperaments.includes(e.currentTarget.id)) {
       finds.style.textDecoration = "line-through";
@@ -31,24 +30,25 @@ const BoxSelect = ({ temperaments, values, setValues, errors }) => {
     }
   };
   const revealRefs = useRef([]);
-  revealRefs.current = [];
+
 
   const addRefs = (el) => {
     if (el && !revealRefs.current.includes(el)) {
       revealRefs.current.push(el);
     }
   };
-  console.log(values.temperaments.length);
   React.useEffect(() => {
-    if(values.temperaments.length ===6) {setDisabled(true)}else{setDisabled(false)}
-    
-
+    if (values.temperaments.length === 6) {
+      setDisabled(true);
+    } else {
+      setDisabled(false);
+    }
   }, [values.temperaments.length]);
 
   return (
     <div className="ContainerSelectBox">
       <div className="select">
-        <div>Dog temperaments</div>
+        <div>Dog temperaments: maximum 6</div>
         <div
           className={active ? "select-label active" : "select-label"}
           onClick={() => setActive(!active)}
@@ -63,11 +63,9 @@ const BoxSelect = ({ temperaments, values, setValues, errors }) => {
                 onClick={(e) => {
                   handleClick(t.name);
                   mark(e);
-                  
                 }}
                 ref={addRefs}
                 id={t.name}
-                
               >
                 {t.name}
               </p>
@@ -86,7 +84,6 @@ const BoxSelect = ({ temperaments, values, setValues, errors }) => {
               onClick={(e) => {
                 deleted(e);
                 mark(e);
-
               }}
             ></span>
           </div>

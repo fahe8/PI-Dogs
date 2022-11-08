@@ -3,11 +3,13 @@ import {
   GET_DOGS_SEARCH,
   GET_DOG_DETAIL,
   GET_TEMPERAMENTS,
+  CREATE_DOG,
   NEXT_PAGE,
   PREV_PAGE,
   CURRENT_PAGE,
   ORDER_BY,
   FILTER_BY,
+  LOADING
 } from "./actions";
 
 const initialState = {
@@ -18,8 +20,10 @@ const initialState = {
   dogDetail: [],
   temperaments: [],
   copyTemperaments: [],
+  createDog:'',
   page: 1,
   dogsPerPage: 9,
+  loading: false
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -93,17 +97,20 @@ const rootReducer = (state = initialState, action) => {
         copyDogs: action.payload,
         dogsApi:action.payload.filter((p) => p.temperaments),
         dogsDb:action.payload.filter((p) => p.Temperaments),
+        loading:false
       };
 
     case GET_DOGS_SEARCH:
       return {
         ...state,
         dogs: action.payload,
+
       };
     case GET_DOG_DETAIL:
       return {
         ...state,
         dogDetail: action.payload,
+        loading: false
       };
 
     case GET_TEMPERAMENTS:
@@ -112,6 +119,12 @@ const rootReducer = (state = initialState, action) => {
         temperaments: action.payload,
         copyTemperaments: action.payload,
       };
+
+    case CREATE_DOG: 
+    return {
+      ...state,
+      createDog: action.payload
+    }
 
     case NEXT_PAGE:
       return {
@@ -128,6 +141,12 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         page: action.payload,
       };
+
+      case LOADING:
+        return {
+          ...state,
+          loading:true
+        }
     default:
       return { ...state };
   }
