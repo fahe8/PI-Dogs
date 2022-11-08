@@ -1,0 +1,24 @@
+.container-search {
+  background-color: rgb(148, 34, 34);
+  height: 30px;
+  position: relative;
+}
+
+.container-search input {
+  width: 100%;
+  height: 100%;
+  font-size: 1.5rem;
+}
+.container-search div {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: url("../../assets/icon/lupa.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 30px;
+  height: 30px;
+}
+
+

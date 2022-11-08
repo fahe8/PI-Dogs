@@ -14,7 +14,6 @@ const Filters = ({ temperaments }) => {
 
   const revealRefs = useRef([]);
 
-
   const addRefs = (el) => {
     if (el && !revealRefs.current.includes(el)) {
       revealRefs.current.push(el);
@@ -24,9 +23,9 @@ const Filters = ({ temperaments }) => {
   useEffect(() => {
     let v = revealRefs.current.filter((f) => {
       if (!f.id.toLowerCase().includes(search)) {
-        f.style.display = "none"
+        f.style.display = "none";
       } else {
-        f.style.display = ""
+        f.style.display = "";
       }
     });
 
@@ -122,50 +121,50 @@ const Filters = ({ temperaments }) => {
         </div>
       </div>
 
-      <div className="filter-group">
-        <p>Order By:</p>
-        <select
-          name=""
-          id=""
-          onChange={(e) => {
-            setSort(e.target.value);
-            dogsFrom && dispatch(orderBy(dogsFrom));
-            checked.length && dispatch(filterBy(checked, dogsFrom));
-            dispatch(orderBy(e.target.value));
-          }}
-        >
-          <option value="" hidden>
-            Sort By:
-          </option>
-          {options.sort.map((elem, idx) => (
-            <option key={idx} value={elem.value}>
-              {elem.text}
+      <div className="filter-groups">
+        <div className="filter-group">
+          <select
+            name=""
+            id=""
+            onChange={(e) => {
+              setSort(e.target.value);
+              dogsFrom && dispatch(orderBy(dogsFrom));
+              checked.length && dispatch(filterBy(checked, dogsFrom));
+              dispatch(orderBy(e.target.value));
+            }}
+          >
+            <option value="" hidden>
+              Sort By:
             </option>
-          ))}
-        </select>
-      </div>
+            {options.sort.map((elem, idx) => (
+              <option key={idx} value={elem.value}>
+                {elem.text}
+              </option>
+            ))}
+          </select>
+        </div>
 
-      <div className="filter-group">
-        <p>Order By:</p>
-        <select
-          name=""
-          id=""
-          onChange={(e) => {
-            setDogsFrom(e.target.value);
-            dispatch(orderBy(e.target.value));
-            checked.length && dispatch(filterBy(checked, e.target.value));
-            sort && dispatch(orderBy(sort));
-          }}
-        >
-          <option value="" hidden>
-            Show from:
-          </option>
-          {options.showFrom.map((elem, idx) => (
-            <option key={idx} value={elem.value}>
-              {elem.text}
+        <div className="filter-group">
+          <select
+            name=""
+            id=""
+            onChange={(e) => {
+              setDogsFrom(e.target.value);
+              dispatch(orderBy(e.target.value));
+              checked.length && dispatch(filterBy(checked, e.target.value));
+              sort && dispatch(orderBy(sort));
+            }}
+          >
+            <option value="" hidden>
+              Show from:
             </option>
-          ))}
-        </select>
+            {options.showFrom.map((elem, idx) => (
+              <option key={idx} value={elem.value}>
+                {elem.text}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
     </div>
   );
