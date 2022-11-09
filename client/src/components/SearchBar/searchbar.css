@@ -1,7 +1,8 @@
 .container-search {
-  background-color: rgb(148, 34, 34);
   height: 30px;
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 .container-search input {
@@ -21,4 +22,18 @@
   height: 30px;
 }
 
+.search {
+  background-color: #fad5a4;
+  margin-top: 5px;
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 1.5rem;
+  
+}
 
+.search p:nth-child(2) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: auto;
+  max-height: 60px;
+}

@@ -9,7 +9,6 @@ const getTemperaments = async () => {
     ).flat()
 
     let temperamentFilters = [...new Set(info)].filter(f => f !== undefined)
-    console.log(temperamentFilters)
     temperamentFilters.map( (t) => {
         Temperament.findOrCreate({
             where: {

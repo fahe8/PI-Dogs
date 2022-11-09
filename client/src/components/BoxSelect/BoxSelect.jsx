@@ -1,9 +1,11 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { useRef } from "react";
 import "./boxSelect.css";
 const BoxSelect = ({ temperaments, values, setValues, errors }) => {
-  const [active, setActive] = React.useState(false);
-  const [disabled, setDisabled] = React.useState(false);
+  const [active, setActive] = useState(false);
+  const [disabled, setDisabled] = useState(false);
+  const [search, setSearch] = useState('');
+
   const handleClick = (value, e) => {
     const newArray = [...values.temperaments];
     const currentIndex = values.temperaments.indexOf(value);
@@ -45,6 +47,27 @@ const BoxSelect = ({ temperaments, values, setValues, errors }) => {
     }
   }, [values.temperaments.length]);
 
+
+  const handleOnchageSearch = (e) => {
+    setSearch(e.target.value.toLowerCase());
+  };
+  //Filtrar los temperamentos de la barra de busqueda
+  useEffect(() => {
+    // eslint-disable-next-line array-callback-return
+    let v = revealRefs.current.filter((f) => {
+      if (!f.id.toLowerCase().includes(search)) {
+        f.style.display = "none";
+      } else {
+        f.style.display = "";
+      }
+    });
+
+    v.forEach((m) => (m.style.display = "none"));
+
+  }, [search]);
+
+  // const boxFilterScroll = {overflowY: filtersCheck.length>4? 'scroll':'none'}
+
   return (
     <div className="ContainerSelectBox">
       <div className="select">
@@ -57,6 +80,7 @@ const BoxSelect = ({ temperaments, values, setValues, errors }) => {
           <div className="arrow"></div>
         </div>
         <div className="select-temperaments">
+          <input type="text" placeholder="Search temperaments" onChange={handleOnchageSearch}/>
           {temperaments.map((t, i) => (
             <div className="option" key={i} disabled={disabled}>
               <p

@@ -4,6 +4,7 @@ const { getDogs} = require('../controllers/dogs/getDogs')
 // let { allDogs} = require('../controllers/dogs/getDogs')
 const { getDogQuery } = require('../controllers/dogs/getDogPerQuery')
 const { createDog } = require('../controllers/dogs/createDog')
+const {deleteDog} = require('../controllers/dogs/deleteDog')
 
 router.get('/', async (req,res) => {
     try {
@@ -24,9 +25,10 @@ router.get('/:id', async (req,res) => {
         const {id} = req.params
         const allDogs = await getDogs()
         const dogId = allDogs.find(dog => dog.id == id)
+        if(!dogId) {throw new Error("Does not exist")}
         res.status(200).send(dogId)
     } catch (error) {
-        
+        res.status(404).send(error.message)
     }
 })
 
@@ -41,6 +43,14 @@ router.post('/', async (req,res) => {
             console.log(error.message)
             res.status(422).send({msg:error.message,created:false})
         }
+    }
+})
+
+router.delete('/:id',async (req,res) => {
+    try {
+        res.status(200).send(await deleteDog(req.params.id))
+    } catch (error) {
+        res.status(404).send(error.message)
     }
 })
 

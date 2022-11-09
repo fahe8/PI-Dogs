@@ -16,12 +16,14 @@ const createDog = async (dog) => {
     })
 
     if(created) {
-        const relacion = await Temperament.findAll({
-            where: {
-                name: temperaments
-            }
-        })
-        dogcreated.addTemperament(relacion)
+        if(temperaments){
+            const relacion = await Temperament.findAll({
+                where: {
+                    name: temperaments
+                }
+            })
+            dogcreated.addTemperament(relacion)
+        }
         return {msg:'It has been created', created:true}
     } else {
         throw new Error('It already exists')

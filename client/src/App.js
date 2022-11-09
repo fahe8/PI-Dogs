@@ -11,8 +11,10 @@ import { getDogs, getTemperaments } from "./redux/actions";
 import RouteNotFound from "./components/RouteNotFound/RouteNotFound";
 
 function App() {
+
   let dispatch = useDispatch();
   let loading = useSelector((state) => state.loading);
+  
   React.useEffect(() => {
     dispatch(getDogs());
     dispatch(getTemperaments());
@@ -22,7 +24,7 @@ function App() {
     <div className="App">
       <Switch>
         <Route exact path="/" component={Ladding}></Route>
-        <Route path="/home" component={Home}>
+        <Route path="/home" >
           {" "}
           <Home loading={loading}></Home>
         </Route>

@@ -3,6 +3,7 @@ import {
   GET_DOGS_SEARCH,
   GET_DOG_DETAIL,
   GET_TEMPERAMENTS,
+  DELETE_DOG,
   CREATE_DOG,
   NEXT_PAGE,
   PREV_PAGE,
@@ -34,16 +35,19 @@ const rootReducer = (state = initialState, action) => {
           return {
             ...state,
             dogs: state.copyDogs,
+            page:1
           };
         case "dogsApi":
           return {
             ...state,
             dogs: state.dogsApi,
+            page:1
           };
         case "dogsDb":
           return {
             ...state,
             dogs: state.dogsDb,
+            page:1
           };
         case "A-Z":
           return {
@@ -95,8 +99,8 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         dogs: action.payload,
         copyDogs: action.payload,
-        dogsApi:action.payload.filter((p) => p.temperaments),
-        dogsDb:action.payload.filter((p) => p.Temperaments),
+        dogsApi:action.payload.filter((p) =>  typeof p.id ==='number'),
+        dogsDb:action.payload.filter((p) =>   typeof p.id ==='string'),
         loading:false
       };
 
@@ -124,6 +128,15 @@ const rootReducer = (state = initialState, action) => {
     return {
       ...state,
       createDog: action.payload
+    }
+
+    case DELETE_DOG : {
+      return {
+        ...state,
+        dogs: [...state.dogs].filter(d => d.id !== action.payload),
+        copyDogs: [...state.copyDogs].filter(d => d.id !== action.payload),
+        dogsDb:[...state.dogsDb].filter(d => d.id !== action.payload)
+      }
     }
 
     case NEXT_PAGE:

@@ -9,6 +9,7 @@ const NEXT_PAGE = "NEXT_PAGE";
 const PREV_PAGE = "PREV_PAGE";
 const CURRENT_PAGE = "CURRENT_PAGE";
 const GET_TEMPERAMENTS = "GET_TEMPERAMENTS";
+const DELETE_DOG = "DELETE_DOG"
 const ORDER_BY = "ORDER_BY";
 const FILTER_BY = "FILTER_BY";
 const LOADING = "LOADING";
@@ -78,7 +79,21 @@ const getTemperaments = () => {
   };
 };
 
+const deleteDog = (id) => {
+  return async (dispatch) => {
+    try {
+      const { data } = await axios.delete(`http://localhost:3001/dogs/${id}`);
+
+      console.log(data)
+      dispatch({type: "DELETE_DOG", payload: id})
+    } catch (error) {
+      console.log(error.response.data);
+    }
+  };
+}
+
 const orderBy = (order) => {
+  currentPage(1)
   return { type: "ORDER_BY", payload: order };
 };
 
@@ -106,6 +121,7 @@ export {
   CREATE_DOG,
   GET_DOG_DETAIL,
   GET_TEMPERAMENTS,
+  DELETE_DOG,
   NEXT_PAGE,
   PREV_PAGE,
   CURRENT_PAGE,
@@ -120,6 +136,7 @@ export {
   prevPage,
   currentPage,
   getTemperaments,
+  deleteDog,
   orderBy,
   filterBy,
   loading,

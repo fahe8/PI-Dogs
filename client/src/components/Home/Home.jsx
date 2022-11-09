@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { getDogs, getTemperaments } from "../../redux/actions";
+import { getDogs, getTemperaments, deleteDog } from "../../redux/actions";
 import Card from "../Card/Card";
 import Pagination from "../Pagination/Pagination";
 import SearchBar from "../SearchBar/SearchBar";
@@ -10,7 +10,6 @@ import Header from "../Header/Header";
 import Loading from "../Loading/Loading";
 import NotFound from "../NotFound/NotFound";
 import "./home.css";
-import { useRef } from "react";
 
 const Home = ({ loading }) => {
   let dispatch = useDispatch();
@@ -21,15 +20,20 @@ const Home = ({ loading }) => {
   let pageMax = Math.ceil(dogs.length / dogsPerPage);
   const [searchDog, setSearchDog] = React.useState(false);
 
-  //Get all Dogs and Temperaments
+  //Obtiene todos los perros y temperamentos
   const handleClick = () => {
     dispatch(getDogs());
     dispatch(getTemperaments());
   };
 
+  const handleDelete = (id) => {
+    dispatch(deleteDog(id));
+  }
+
   if (loading) {
     return <Loading></Loading>;
   }
+
   return (
     <div className="homeContainer">
       <Header></Header>
@@ -40,6 +44,7 @@ const Home = ({ loading }) => {
             searchDog={searchDog}
             setSearchDog={setSearchDog}
             temperaments={temperaments}
+            reloadTemps={() => {dispatch(getTemperaments())}}
           ></Filters>
         </div>
       </div>
@@ -63,6 +68,7 @@ const Home = ({ loading }) => {
                   maxWeight={dog.maxWeight}
                   Temperaments={dog.Temperaments?.map((t) => t.name)}
                   temperaments={dog.temperaments?.split(", ").map((t) => t)}
+                  handleDelete={handleDelete}
                 ></Card>
               ))}
           </div>

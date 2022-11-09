@@ -2,13 +2,15 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./card.css";
 
-const Card = ({ id, name, image,minWeight, maxWeight, temperaments, Temperaments }) => {
+const Card = ({ id, name, image,minWeight, maxWeight, temperaments, Temperaments,handleDelete }) => {
   let newArr = (temperaments || Temperaments)
+
 
   return (
     <div className="card">
       <figure>
         <img src={image} alt="dog-imagen" />
+        {typeof id === 'string' &&<button className="delete" onClick={() => handleDelete(id)}>X</button>}
       </figure>
       <div className="card-content">
         <h1>{name[0].toUpperCase() + name.slice(1)}</h1>

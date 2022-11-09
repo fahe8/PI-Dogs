@@ -1,7 +1,7 @@
-const axios = require('axios')
-const {Dog, Temperament} = require("../../db")
-const { Op } = require("sequelize");
-let {allDogs,  getDogs} = require('./getDogs')
+// const axios = require('axios')
+// const {Dog, Temperament} = require("../../db")
+// const { Op } = require("sequelize");
+let { getDogs} = require('./getDogs')
 
 // const dogDb = async (dog) => {
 //     return await Dog.findAll({

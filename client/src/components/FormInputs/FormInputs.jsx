@@ -1,6 +1,6 @@
-import { React, useState } from "react";
+import { React } from "react";
 import "./formInputs.css";
-import validation from "./validation";
+
 
 const FormInputs = ({ label, handleChange, ...propsInput}) => {
   

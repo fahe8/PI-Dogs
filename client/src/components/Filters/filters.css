@@ -19,13 +19,13 @@
   width: 100%;
   border-bottom: 1px solid #d7d7d7;
   text-transform: uppercase;
-  /* background-color: #fad5a4; */
+  
 }
 
 .selecTemp-content {
   max-height: 200px;
   overflow: hidden;
-
+  box-shadow: rgba(33, 35, 38, 0.1) 0px 10px 10px -10px;
 }
 
 .selecTemp-content .search {
@@ -42,18 +42,36 @@
   margin-top: 1px;
 }
 
-.selectTemp-filters {
+.selectTemp-filters, .box-selected-filters div  {
+  position: relative;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 4px;
   overflow: hidden;
-  overflow-y: scroll;
+  overflow-y: auto;
+  min-height: 30px;
   max-height: inherit;
+}
+
+.reload-temps {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  border: 2px solid #000000;
+  background: url('../../assets/icon/reload.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size:cover;
+  cursor: pointer;
 }
 
 .selectTemp-filters-text {
   display: flex;
   gap: 5px;
+  cursor: pointer;
 }
 .checkBox {
   position: relative;
@@ -84,6 +102,11 @@
   margin: 20px 0 10px 0;
   padding: 5px 0;
   width: 100%;
+
+}
+
+.btns button {
+  cursor: pointer;
 }
 /* Order By */
 .filter-groups {
@@ -103,6 +126,24 @@
   border-radius: 5px;
   min-width: 115px;
   padding: 5px;
+  cursor: pointer;
+}
+
+.box-selected-filters {
+  background-color: #fad5a4;
+  padding: 5px 10px;
+}
+
+.box-selected-filters p{
+  text-transform: capitalize;
+  padding-top: 5px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #000000;
+}
+
+.box-selected-filters div {
+  max-height: 90px;
+
 }
 
 @media (min-width: 450px) {

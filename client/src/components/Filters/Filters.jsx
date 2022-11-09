@@ -1,10 +1,9 @@
 import { React, useState, useEffect, useRef } from "react";
-import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { orderBy, filterBy } from "../../redux/actions";
 import "./filters.css";
 
-const Filters = ({ temperaments, searchDog, setSearchDog }) => {
+const Filters = ({ temperaments, searchDog, setSearchDog, reloadTemps}) => {
   let dispatch = useDispatch();
 
   const [sort, setSort] = useState("");
@@ -12,15 +11,21 @@ const Filters = ({ temperaments, searchDog, setSearchDog }) => {
   const [checked, setChecked] = useState([]);
   const [search, setSearch] = useState("");
   const [boxFilter, setbBoxFilter] = useState(false);
+  const [filtersCheck, setFiltersCheck] = useState([]);
 
   const revealRefs = useRef([]);
 
+  //Crea un array de referencias
   const addRefs = (el) => {
     if (el && !revealRefs.current.includes(el)) {
       revealRefs.current.push(el);
     }
   };
-
+  
+  const handleOnchageSearch = (e) => {
+    setSearch(e.target.value.toLowerCase());
+  };
+  //Filtrar los temperamentos de la barra de busqueda
   useEffect(() => {
     // eslint-disable-next-line array-callback-return
     let v = revealRefs.current.filter((f) => {
@@ -32,11 +37,15 @@ const Filters = ({ temperaments, searchDog, setSearchDog }) => {
     });
 
     v.forEach((m) => (m.style.display = "none"));
+
   }, [search]);
+
+  //Activa el check de la caja
   const handleToggleCheck = (event) => {
     event.currentTarget.classList.toggle("active");
   };
 
+  //Agrega en un array los temperamentos que se van a filtrar
   const handleToggleTemp = (value) => {
     const newChecked = [...checked];
     const currentIndex = checked.indexOf(value);
@@ -48,26 +57,34 @@ const Filters = ({ temperaments, searchDog, setSearchDog }) => {
     setChecked(newChecked);
   };
 
+  //Limpia los estilos de los checkBoxs
   const handleClearFilters = () => {
     console.log("object");
     revealRefs.current.forEach((t) => t.classList.remove("active"));
     setChecked([]);
   };
+  
 
-  const handleOnchageSearch = (e) => {
-    setSearch(e.target.value.toLowerCase());
-  };
-
+  //Limpia los filtros al realizar la busqueda de un perro
   useEffect(() => {
     if (searchDog) {
       setSearchDog(false);
       setSort("");
       setDogsFrom("");
-
       handleClearFilters();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchDog]);
+
+const showFilters = () => {
+  if(checked.length > 0) {
+    setbBoxFilter(true)
+  } else {
+    setbBoxFilter(false)
+  }
+}
+//Estilos en linea
+  const boxFilterVisible = {display: boxFilter? '':'none'}
 
   const options = {
     sort: [
@@ -99,7 +116,7 @@ const Filters = ({ temperaments, searchDog, setSearchDog }) => {
             />
           </div>
           <div className="selectTemp-filters">
-            {temperaments?.map((t, i) => (
+            {temperaments.length? temperaments.map((t, i) => (
               <label
                 className="selectTemp-filters-text"
                 key={i}
@@ -111,10 +128,9 @@ const Filters = ({ temperaments, searchDog, setSearchDog }) => {
                 ref={addRefs}
               >
                 <div className="checkBox"></div>
-
                 {t.name}
               </label>
-            ))}
+            )): <button className="reload-temps" onClick={reloadTemps}></button>}
           </div>
         </div>
         <div className="btns">
@@ -123,6 +139,8 @@ const Filters = ({ temperaments, searchDog, setSearchDog }) => {
               dispatch(orderBy(dogsFrom));
               dispatch(filterBy(checked, dogsFrom));
               sort && dispatch(orderBy(sort));
+              setFiltersCheck(checked)
+              showFilters()
             }}
           >
             Filter
@@ -175,10 +193,13 @@ const Filters = ({ temperaments, searchDog, setSearchDog }) => {
         </div>
       </div>
 
-      <div>
-        {checked?.map((t, idx) => (
-          <p key={idx}>{t}</p>
+      <div className="box-selected-filters" style={boxFilterVisible}>
+        <p>selected filters:</p>
+        <div>
+        {filtersCheck?.map((t, idx) => (
+          <label key={idx}>{t}</label>
         ))}
+        </div>
       </div>
     </div>
   );
