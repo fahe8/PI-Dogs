@@ -88,8 +88,9 @@
 /* Order By */
 .filter-groups {
   display: flex;
-  flex-direction: column;
+  justify-content: space-evenly;
   gap: 20px;
+  padding: 0 15px;
 }
 .filter-group {
   display: flex;
@@ -100,33 +101,37 @@
 .filter-group select {
   background-color: #fad5a4;
   border-radius: 5px;
-  
+  min-width: 115px;
+  padding: 5px;
 }
 
 @media (min-width: 450px) {
   .selectTemp-filters {
-
     grid-template-columns: 1fr 1fr 1fr;
-
   }
-
+  .filter-group select {
+    min-width: 200px;
+    padding: 10px;
+  }
 }
 
 @media (min-width: 700px) {
   .selectTemp-filters {
-
     grid-template-columns: 1fr 1fr 1fr 1fr;
-
-
+  }
+  .filter-group select {
+    min-width: 250px;
+    padding: 10px;
   }
 }
 
 @media (min-width: 900px) {
   .selectTemp-filters {
-
     grid-template-columns: 1fr;
-
-
+  }
+  .filter-group select {
+    min-width: 100%;
+    padding: 10px;
   }
 }
 

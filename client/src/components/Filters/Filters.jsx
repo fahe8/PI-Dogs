@@ -4,13 +4,14 @@ import { useDispatch } from "react-redux";
 import { orderBy, filterBy } from "../../redux/actions";
 import "./filters.css";
 
-const Filters = ({ temperaments }) => {
+const Filters = ({ temperaments, searchDog, setSearchDog }) => {
   let dispatch = useDispatch();
 
   const [sort, setSort] = useState("");
   const [dogsFrom, setDogsFrom] = useState("copyDogs");
   const [checked, setChecked] = useState([]);
   const [search, setSearch] = useState("");
+  const [boxFilter, setbBoxFilter] = useState(false);
 
   const revealRefs = useRef([]);
 
@@ -21,6 +22,7 @@ const Filters = ({ temperaments }) => {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line array-callback-return
     let v = revealRefs.current.filter((f) => {
       if (!f.id.toLowerCase().includes(search)) {
         f.style.display = "none";
@@ -47,17 +49,25 @@ const Filters = ({ temperaments }) => {
   };
 
   const handleClearFilters = () => {
-    // setChecked([])
-    let allChecks = document.querySelectorAll("label");
-    for (const iterator of allChecks) {
-      iterator.classList.remove("active");
-    }
+    console.log("object");
+    revealRefs.current.forEach((t) => t.classList.remove("active"));
     setChecked([]);
   };
 
   const handleOnchageSearch = (e) => {
     setSearch(e.target.value.toLowerCase());
   };
+
+  useEffect(() => {
+    if (searchDog) {
+      setSearchDog(false);
+      setSort("");
+      setDogsFrom("");
+
+      handleClearFilters();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchDog]);
 
   const options = {
     sort: [
@@ -124,8 +134,7 @@ const Filters = ({ temperaments }) => {
       <div className="filter-groups">
         <div className="filter-group">
           <select
-            name=""
-            id=""
+            value={sort}
             onChange={(e) => {
               setSort(e.target.value);
               dogsFrom && dispatch(orderBy(dogsFrom));
@@ -146,8 +155,7 @@ const Filters = ({ temperaments }) => {
 
         <div className="filter-group">
           <select
-            name=""
-            id=""
+            value={dogsFrom}
             onChange={(e) => {
               setDogsFrom(e.target.value);
               dispatch(orderBy(e.target.value));
@@ -165,6 +173,12 @@ const Filters = ({ temperaments }) => {
             ))}
           </select>
         </div>
+      </div>
+
+      <div>
+        {checked?.map((t, idx) => (
+          <p key={idx}>{t}</p>
+        ))}
       </div>
     </div>
   );

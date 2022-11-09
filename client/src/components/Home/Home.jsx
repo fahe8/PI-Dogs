@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { getDogs } from "../../redux/actions";
+import { getDogs, getTemperaments } from "../../redux/actions";
 import Card from "../Card/Card";
 import Pagination from "../Pagination/Pagination";
 import SearchBar from "../SearchBar/SearchBar";
@@ -10,6 +10,7 @@ import Header from "../Header/Header";
 import Loading from "../Loading/Loading";
 import NotFound from "../NotFound/NotFound";
 import "./home.css";
+import { useRef } from "react";
 
 const Home = ({ loading }) => {
   let dispatch = useDispatch();
@@ -18,8 +19,12 @@ const Home = ({ loading }) => {
   let page = useSelector((state) => state.page);
   let dogsPerPage = useSelector((state) => state.dogsPerPage);
   let pageMax = Math.ceil(dogs.length / dogsPerPage);
+  const [searchDog, setSearchDog] = React.useState(false);
+
+  //Get all Dogs and Temperaments
   const handleClick = () => {
     dispatch(getDogs());
+    dispatch(getTemperaments());
   };
 
   if (loading) {
@@ -30,8 +35,12 @@ const Home = ({ loading }) => {
       <Header></Header>
       <div className="container-left">
         <div className="panel-left">
-          <SearchBar></SearchBar>
-          <Filters temperaments={temperaments}></Filters>
+          <SearchBar setSearchDog={setSearchDog}></SearchBar>
+          <Filters
+            searchDog={searchDog}
+            setSearchDog={setSearchDog}
+            temperaments={temperaments}
+          ></Filters>
         </div>
       </div>
       {dogs.length ? (
@@ -60,7 +69,11 @@ const Home = ({ loading }) => {
           <Pagination page={page} pageMax={pageMax}></Pagination>
         </div>
       ) : (
-        <NotFound text={"Dog Not Found"} btnText={"See all Dogs"} handleClick={handleClick}></NotFound>
+        <NotFound
+          text={"Dog Not Found"}
+          btnText={"See all Dogs"}
+          handleClick={handleClick}
+        ></NotFound>
       )}
     </div>
   );

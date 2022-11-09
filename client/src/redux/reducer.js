@@ -104,7 +104,7 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         dogs: action.payload,
-
+        page: 1
       };
     case GET_DOG_DETAIL:
       return {

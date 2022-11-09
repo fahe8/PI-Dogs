@@ -8,15 +8,15 @@ const GET_DOG_DETAIL = "GET_DOG_DETAIL";
 const NEXT_PAGE = "NEXT_PAGE";
 const PREV_PAGE = "PREV_PAGE";
 const CURRENT_PAGE = "CURRENT_PAGE";
-const GET_TEMPERAMENTS = "GET_TEMPERAMENTS"
-const ORDER_BY = "ORDER_BY"
-const FILTER_BY = "FILTER_BY"
-const LOADING = "LOADING"
+const GET_TEMPERAMENTS = "GET_TEMPERAMENTS";
+const ORDER_BY = "ORDER_BY";
+const FILTER_BY = "FILTER_BY";
+const LOADING = "LOADING";
 
 const getDogs = () => {
   return async (dispatch) => {
     try {
-      dispatch(loading())
+      dispatch(loading());
       const { data } = await axios.get("http://localhost:3001/dogs");
       return dispatch({ type: "GET_DOGS", payload: data });
     } catch (error) {
@@ -29,6 +29,7 @@ const getDogs = () => {
 const getDogsSearch = (dog) => {
   return async (dispatch) => {
     try {
+      currentPage(1);
       const { data } = await axios.get(
         "http://localhost:3001/dogs?name=" + dog
       );
@@ -55,7 +56,7 @@ const createDog = (dog) => {
 const getDogDetail = (id) => {
   return async (dispatch) => {
     try {
-      dispatch(loading())
+      dispatch(loading());
       const { data } = await axios.get(`http://localhost:3001/dogs/${id}`);
       return dispatch({ type: "GET_DOG_DETAIL", payload: data });
     } catch (error) {
@@ -66,27 +67,25 @@ const getDogDetail = (id) => {
 };
 
 const getTemperaments = () => {
-    return async (dispatch) => {
-        try {
-          const { data } = await axios.get("http://localhost:3001/temperament");
-          return dispatch({ type: "GET_TEMPERAMENTS", payload: data });
-        } catch (error) {
-          console.log(error.response.data);
-          return dispatch({ type: "GET_TEMPERAMENTS", payload: [] });
-        }
-      };
-}
+  return async (dispatch) => {
+    try {
+      const { data } = await axios.get("http://localhost:3001/temperament");
+      return dispatch({ type: "GET_TEMPERAMENTS", payload: data });
+    } catch (error) {
+      console.log(error.response.data);
+      return dispatch({ type: "GET_TEMPERAMENTS", payload: [] });
+    }
+  };
+};
 
-
-
- const orderBy = (order) => {
+const orderBy = (order) => {
   return { type: "ORDER_BY", payload: order };
 };
 
- const filterBy = (temps, from = "copyDogs") => {
-  currentPage(1)
-  return {type: "FILTER_BY", payload: {temps, from}}
-}
+const filterBy = (temps, from = "copyDogs") => {
+  currentPage(1);
+  return { type: "FILTER_BY", payload: { temps, from } };
+};
 const nextPage = () => {
   return { type: "NEXT_PAGE" };
 };
@@ -98,9 +97,8 @@ const currentPage = (page) => {
 };
 
 const loading = () => {
-  return {type:"LOADING"}
-}
-
+  return { type: "LOADING" };
+};
 
 export {
   GET_DOGS,
@@ -124,5 +122,5 @@ export {
   getTemperaments,
   orderBy,
   filterBy,
-  loading
-  };
+  loading,
+};
