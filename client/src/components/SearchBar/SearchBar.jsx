@@ -2,22 +2,21 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { orderBy, getDogsSearch } from "../../redux/actions";
 import "./searchbar.css";
+import {useLocalStorage} from '../../localStorage/localStorage'
 const SearchBar = ({ setSearchDog }) => {
   let dispatch = useDispatch();
-  const [dog, setDog] = React.useState("");
-  const [copyDog, setCopyDog] = React.useState("");
+  const [dog, setDog] = React.useState('')
+  const [copyDog, setCopyDog] = useLocalStorage('searchDog', '');
 
-  const onChange = (search) => {
-    setDog(search);
-  };
+
 
   const handleSearch = (e) => {
     e.preventDefault();
     setSearchDog(true);
     if (dog.length > 0) {
       dispatch(getDogsSearch(dog));
-      setDog("");
       setCopyDog(dog);
+      setDog("");
     } else {
       dispatch(orderBy());
     }
@@ -29,7 +28,7 @@ const SearchBar = ({ setSearchDog }) => {
         <input
           type="text"
           value={dog}
-          onChange={(e) => onChange(e.target.value)}
+          onChange={(e) => setDog(e.target.value)}
           placeholder="Search dog"
         />
         <div onClick={(e) => handleSearch(e)}></div>

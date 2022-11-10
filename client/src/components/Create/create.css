@@ -11,7 +11,7 @@
 @keyframes visibleCard {
   0% {
     opacity: 0;
-    transform:  translatey(40%);
+    transform:  translatey(10%);
   }
 
   50% {

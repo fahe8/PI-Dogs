@@ -2,16 +2,17 @@ import { React, useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { orderBy, filterBy } from "../../redux/actions";
 import "./filters.css";
+import { useLocalStorage } from "../../localStorage/localStorage";
 
-const Filters = ({ temperaments, searchDog, setSearchDog, reloadTemps}) => {
+const Filters = ({ temperaments, searchDog, setSearchDog, reloadTemps }) => {
   let dispatch = useDispatch();
 
-  const [sort, setSort] = useState("");
-  const [dogsFrom, setDogsFrom] = useState("copyDogs");
-  const [checked, setChecked] = useState([]);
+  const [sort, setSort] = useLocalStorage("sort", "");
+  const [dogsFrom, setDogsFrom] = useLocalStorage("dogsFrom", "copyDogs");
+  const [checked, setChecked] = useLocalStorage("filters", []);
   const [search, setSearch] = useState("");
-  const [boxFilter, setbBoxFilter] = useState(false);
-  const [filtersCheck, setFiltersCheck] = useState([]);
+  const [filtersCheck, setFiltersCheck] = useState(checked);
+  const [activeBox, setActiveBox] = useState(true);
 
   const revealRefs = useRef([]);
 
@@ -21,36 +22,41 @@ const Filters = ({ temperaments, searchDog, setSearchDog, reloadTemps}) => {
       revealRefs.current.push(el);
     }
   };
-  
+
   const handleOnchageSearch = (e) => {
     setSearch(e.target.value.toLowerCase());
   };
   //Filtrar los temperamentos de la barra de busqueda
   useEffect(() => {
     // eslint-disable-next-line array-callback-return
-    let v = revealRefs.current.filter((f) => {
+    revealRefs.current.filter((f) => {
       if (!f.id.toLowerCase().includes(search)) {
         f.style.display = "none";
       } else {
         f.style.display = "";
       }
     });
-
-    v.forEach((m) => (m.style.display = "none"));
-
   }, [search]);
 
   //Activa el check de la caja
   const handleToggleCheck = (event) => {
-    event.currentTarget.classList.toggle("active");
+    // event.currentTarget.classList.toggle("active");
+    console.log(event.currentTarget)
+    console.log(event.currentTarget.id)
+    if (event.currentTarget.classList.contains("active")) {
+      event.currentTarget.classList.remove("active");
+    } else {
+      event.currentTarget.classList.add("active");
+    }
   };
 
   //Agrega en un array los temperamentos que se van a filtrar
   const handleToggleTemp = (value) => {
     const newChecked = [...checked];
-    const currentIndex = checked.indexOf(value);
+
+    const currentIndex = checked.indexOf(value.id);
     if (currentIndex === -1) {
-      newChecked.push(value);
+      newChecked.push(value.id);
     } else {
       newChecked.splice(currentIndex, 1);
     }
@@ -59,32 +65,21 @@ const Filters = ({ temperaments, searchDog, setSearchDog, reloadTemps}) => {
 
   //Limpia los estilos de los checkBoxs
   const handleClearFilters = () => {
-    console.log("object");
     revealRefs.current.forEach((t) => t.classList.remove("active"));
     setChecked([]);
   };
-  
 
   //Limpia los filtros al realizar la busqueda de un perro
   useEffect(() => {
     if (searchDog) {
       setSearchDog(false);
       setSort("");
-      setDogsFrom("");
+      setDogsFrom("dogs");
       handleClearFilters();
+      setActiveBox(false)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchDog]);
-
-const showFilters = () => {
-  if(checked.length > 0) {
-    setbBoxFilter(true)
-  } else {
-    setbBoxFilter(false)
-  }
-}
-//Estilos en linea
-  const boxFilterVisible = {display: boxFilter? '':'none'}
 
   const options = {
     sort: [
@@ -94,7 +89,8 @@ const showFilters = () => {
       { value: "asc", text: "Lower Weight" },
     ],
     showFrom: [
-      { value: "copyDogs", text: "All dogs" },
+      { value: "copyDogs", text: "All Default Page" },
+      { value: "dogs", text: "All dogs" },
       { value: "dogsApi", text: "Api" },
       { value: "dogsDb", text: "Created" },
     ],
@@ -116,21 +112,25 @@ const showFilters = () => {
             />
           </div>
           <div className="selectTemp-filters">
-            {temperaments.length? temperaments.map((t, i) => (
-              <label
-                className="selectTemp-filters-text"
-                key={i}
-                id={t.name}
-                onClick={(e) => {
-                  handleToggleCheck(e);
-                  handleToggleTemp(e.currentTarget.id);
-                }}
-                ref={addRefs}
-              >
-                <div className="checkBox"></div>
-                {t.name}
-              </label>
-            )): <button className="reload-temps" onClick={reloadTemps}></button>}
+            {temperaments.length ? (
+              temperaments.map((t, i) => (
+                <label
+                  className="selectTemp-filters-text"
+                  key={i}
+                  id={t.name}
+                  onClick={(e) => {
+                    handleToggleCheck(e);
+                    handleToggleTemp(e.currentTarget);
+                  }}
+                  ref={addRefs}
+                >
+                  <div className="checkBox"></div>
+                  {t.name}
+                </label>
+              ))
+            ) : (
+              <button className="reload-temps" onClick={reloadTemps}></button>
+            )}
           </div>
         </div>
         <div className="btns">
@@ -139,8 +139,8 @@ const showFilters = () => {
               dispatch(orderBy(dogsFrom));
               dispatch(filterBy(checked, dogsFrom));
               sort && dispatch(orderBy(sort));
-              setFiltersCheck(checked)
-              showFilters()
+              setFiltersCheck(checked);
+              setActiveBox(true)
             }}
           >
             Filter
@@ -193,12 +193,12 @@ const showFilters = () => {
         </div>
       </div>
 
-      <div className="box-selected-filters" style={boxFilterVisible}>
+      <div className="box-selected-filters">
         <p>selected filters:</p>
         <div>
-        {filtersCheck?.map((t, idx) => (
-          <label key={idx}>{t}</label>
-        ))}
+          {activeBox && filtersCheck?.map((t, idx) => (
+            <label key={idx}>{t}</label>
+          ))}
         </div>
       </div>
     </div>

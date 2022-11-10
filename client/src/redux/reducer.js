@@ -31,6 +31,12 @@ const rootReducer = (state = initialState, action) => {
   switch (action.type) {
     case ORDER_BY:
       switch (action.payload) {
+        
+        case "dogs":
+          return {
+            ...state,
+            dogs:[...state.dogs]
+          }
         case "copyDogs":
           return {
             ...state,
@@ -74,12 +80,12 @@ const rootReducer = (state = initialState, action) => {
             ...state,
             dogs: [...state.dogs].sort((a, b) => a.minWeight - b.minWeight),
           };
-
         default:
-          return { ...state, dogs: state.copyDogs };
+          return { ...state, dogs: [...state.dogs] };
       }
 
     case FILTER_BY:
+      console.log(action.payload.from)
       let aux = state[action.payload.from];
       for (const i of action.payload.temps) {
         const dogsFilter = aux.filter(
