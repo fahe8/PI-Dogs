@@ -41,8 +41,6 @@ const Filters = ({ temperaments, searchDog, setSearchDog, reloadTemps }) => {
   //Activa el check de la caja
   const handleToggleCheck = (event) => {
     // event.currentTarget.classList.toggle("active");
-    console.log(event.currentTarget)
-    console.log(event.currentTarget.id)
     if (event.currentTarget.classList.contains("active")) {
       event.currentTarget.classList.remove("active");
     } else {
@@ -74,9 +72,9 @@ const Filters = ({ temperaments, searchDog, setSearchDog, reloadTemps }) => {
     if (searchDog) {
       setSearchDog(false);
       setSort("");
-      setDogsFrom("dogs");
+      setDogsFrom("copyDogs");
       handleClearFilters();
-      setActiveBox(false)
+      setActiveBox(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchDog]);
@@ -89,8 +87,7 @@ const Filters = ({ temperaments, searchDog, setSearchDog, reloadTemps }) => {
       { value: "asc", text: "Lower Weight" },
     ],
     showFrom: [
-      { value: "copyDogs", text: "All Default Page" },
-      { value: "dogs", text: "All dogs" },
+      { value: "copyDogs", text: "All dogs" },
       { value: "dogsApi", text: "Api" },
       { value: "dogsDb", text: "Created" },
     ],
@@ -136,11 +133,16 @@ const Filters = ({ temperaments, searchDog, setSearchDog, reloadTemps }) => {
         <div className="btns">
           <button
             onClick={() => {
+              // if(dogsFrom === 'copyDogs'){
+              //   setDogsFrom('dogs')
+              // dispatch(orderBy(dogsFrom));
+
+              // }
               dispatch(orderBy(dogsFrom));
               dispatch(filterBy(checked, dogsFrom));
               sort && dispatch(orderBy(sort));
               setFiltersCheck(checked);
-              setActiveBox(true)
+              setActiveBox(true);
             }}
           >
             Filter
@@ -175,7 +177,11 @@ const Filters = ({ temperaments, searchDog, setSearchDog, reloadTemps }) => {
           <select
             value={dogsFrom}
             onChange={(e) => {
-              setDogsFrom(e.target.value);
+              if (searchDog) {
+                setDogsFrom("dogs");
+              } else {
+                setDogsFrom(e.target.value);
+              }
               dispatch(orderBy(e.target.value));
               checked.length && dispatch(filterBy(checked, e.target.value));
               sort && dispatch(orderBy(sort));
@@ -193,12 +199,25 @@ const Filters = ({ temperaments, searchDog, setSearchDog, reloadTemps }) => {
         </div>
       </div>
 
+      <div className="btns">
+        <button 
+          onClick={() => {
+            setDogsFrom("copyDogs");
+            setSort('')
+            dispatch(orderBy("dogs"));
+            handleClearFilters();
+            setChecked([])
+            setFiltersCheck([])
+          }}
+        >
+          Default Page
+        </button>
+      </div>
       <div className="box-selected-filters">
         <p>selected filters:</p>
         <div>
-          {activeBox && filtersCheck?.map((t, idx) => (
-            <label key={idx}>{t}</label>
-          ))}
+          {activeBox &&
+            filtersCheck?.map((t, idx) => <label key={idx}>{t}</label>)}
         </div>
       </div>
     </div>

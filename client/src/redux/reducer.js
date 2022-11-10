@@ -14,6 +14,7 @@ import {
 } from "./actions";
 
 const initialState = {
+  allDogsDefault: [],
   dogs: [],
   dogsApi:[],
   dogsDb:[],
@@ -33,9 +34,10 @@ const rootReducer = (state = initialState, action) => {
       switch (action.payload) {
         
         case "dogs":
+
           return {
             ...state,
-            dogs:[...state.dogs]
+            dogs: state.allDogsDefault
           }
         case "copyDogs":
           return {
@@ -105,6 +107,7 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         dogs: action.payload,
         copyDogs: action.payload,
+        allDogsDefault: action.payload,
         dogsApi:action.payload.filter((p) =>  typeof p.id ==='number'),
         dogsDb:action.payload.filter((p) =>   typeof p.id ==='string'),
         loading:false
@@ -114,6 +117,9 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         dogs: action.payload,
+        copyDogs: action.payload,
+        dogsApi:action.payload.filter((p) =>  typeof p.id ==='number'),
+        dogsDb:action.payload.filter((p) =>   typeof p.id ==='string'),
         page: 1
       };
     case GET_DOG_DETAIL:
